@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
 	01 背包问题
     给定两个数组w和v，两个数组长度相等，w[i]表示第i件商品的重量，v[i]表示第i件商品的价值。再给定一个整数bag，
@@ -9,8 +11,9 @@ public class Knapsack1{
         int[] values = {2, 3, 1, 0, 2, 3};
         int space = 13;
 
-//        System.out.println(violation2(weights, values, space, 0, 0));
-//        System.out.println(violation3(weights, values, space, weights.length));
+        // System.out.println(violation2(weights, values, space, 0, 0));
+        // System.out.println(violation3(weights, values, space, weights.length));
+        // System.out.println(solution(weights, values, space));
         System.out.println(solution2(weights, values, space));
     }
 
@@ -63,25 +66,18 @@ public class Knapsack1{
     /**
      *  根据 violation3 优化的动态规划实现
      * */
-    private static int solution(int[] weights, int[] values, int space) {
-        // dp[i][j] 表示容积为 j ，有 i 种物品可选的环境中的最大利润值
-        int[][] dp = new int[weights.length][space];
-        // 只能选 0 个物品（什么物品都不能选，所得价值为 0）
-        for (int c = 0, len = dp[0].length; c < len; c++) {
-            dp[0][c] = 0;
-        }
+    private static int solution(int[] costs, int[] values, int space) {
+        // dp[i][j] 表示背包容积为 j ，且有 i 种物品可选的环境中的最大利润值
+        int[][] dp = new int[costs.length + 1][space + 1];
+        // dp[0][0 - space] = 0：背包空间有余量，但是不能选择物品装入背包中
 
-        for (int r = 1; r < dp.length; r++) {
-            for (int c = 0; c < dp[r].length; c++) {
-                if (c >= weights[r]) {
-                    dp[r][c] = Math.max(dp[r - 1][c], values[r] + dp[r - 1][c - weights[r]]);
-                } else {
-                    dp[r][c] = dp[r - 1][c];
-                }
+        for (int i = 0; i < costs.length; i++) {
+            for (int j = costs[i]; j <= space; j++) {
+                dp[i + 1][j] = Math.max(dp[i][j], dp[i][j - costs[i]] + values[i]);
             }
         }
 
-        return dp[weights.length - 1][space - 1];
+        return dp[costs.length][space];
     }
 
 
@@ -89,15 +85,28 @@ public class Knapsack1{
         对 solution 进行空间优化，使空间复杂度为O(space)
     */
     private static int solution2(int[] costs, int[] values, int space) {
-        int[] dp = new int[space];
-        for(int i = 1; i < costs.length; i++) {
-            for(int j = 1; j < space; j++) {
-                if(j >= costs[i]) {
+        // dp[i] 表示容量为 i 时，所能选取的最大利润值
+        int[] dp = new int[space + 1];
+
+        /*
+            // 这种写法得出的是完全背包问题的答案
+            for(int i = costs[0]; i <= space; i++) {
+                dp[i] = values[0];
+            }
+
+            for(int i = 1; i < costs.length; i++) {
+                for(int j = costs[i]; j <= space; j++) {
                     dp[j] = Math.max(dp[j], dp[j - costs[i]] + values[i]);
                 }
             }
+        */
+
+        for(int i = 0; i < costs.length; i++) {
+            for(int j = space; j >= costs[i]; j--) {
+                dp[j] = Math.max(dp[j], dp[j - costs[i]] + values[i]);
+            }
         }
 
-        return dp[space - 1];
+        return dp[space];
     }
 }
