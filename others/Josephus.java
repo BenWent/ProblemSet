@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
 	在一间房间总共有n个人（下标0～n-1），只能有最后一个人活命。
@@ -18,18 +18,17 @@ public class Josephus{
 		int n = 7;
         int q = 3;
 
-        LinkedList<Integer> list = new LinkedList<>();
+        ArrayList<Integer> list = new ArrayList<>();
         for(int i = 0; i < n; i++) {
             list.add(i);
         }
 
-        int count = 0;
         q--;
-        while (list.size() != 1) {
-            count = (count + q) % list.size();
-            int i = list.remove(count);
+        for(int count = 0; n > 1; n--) {
+            count = (count + q) % n;
+            list.remove(count);
         }
 
-        System.out.println("the last one is " + list.getLast());
+        System.out.println("the last one is " + list.get(0));
 	}
 }
