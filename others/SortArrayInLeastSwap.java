@@ -14,20 +14,20 @@ public class SortArrayInLeastSwap {
 		method2(nums);
 	}
 
-	private static void method2(int[] nums) {
-		int[] sortedNums = new int[nums.length];
-		System.arraycopy(nums, 0, sortedNums, 0, nums.length);
-		Arrays.sort(sortedNums);
+	// private static void method2(int[] nums) {
+	// 	int[] sortedNums = new int[nums.length];
+	// 	System.arraycopy(nums, 0, sortedNums, 0, nums.length);
+	// 	Arrays.sort(sortedNums);
 
-		int count = 0;
-		for(int i = nums.length - 1, j = sortedNums.length - 1; i >= 0; i--) {
-			if(nums[i] == sortedNums[j]) {
-				count++;
-				j--;
-			}
-		}
-		System.out.println("交换次数:" + (nums.length - count));
-	}
+	// 	int count = 0;
+	// 	for(int i = nums.length - 1, j = sortedNums.length - 1; i >= 0; i--) {
+	// 		if(nums[i] != sortedNums[j]) {
+	// 			count++;
+	// 			j--;
+	// 		}
+	// 	}
+	// 	System.out.println("交换次数:" + (nums.length - count));
+	// }
 
 	private static void method1(int[] nums) {
 		int[] copy = new int[nums.length];
