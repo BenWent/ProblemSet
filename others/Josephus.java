@@ -14,31 +14,22 @@ import java.util.LinkedList;
 */
 public class Josephus{
 	public static void main(String[] args){
-		int n = 41;
+        // 题目给定数据
+		int n = 7;
         int q = 3;
 
-        // arr[i] == 0，代表 第 (i + 1)个人没有报过数；反之，则报过数
-        int[] arr = new int[n];
-        int count = 0;
-        int loop = 0;
         LinkedList<Integer> list = new LinkedList<>();
-        while (loop++ < q) {
-            for (int i = 0; i < n; i++) {
-                if (arr[i] == 0) {
-                    count++;
-                }
-
-                if (count == q) {
-                    arr[i] = 1;
-                    count = 0;
-
-                    loop = 0;
-
-                    // System.out.print((i + 1) + " ");
-                    list.add(i + 1);
-                }
-            }
+        for(int i = 0; i < n; i++) {
+            list.add(i);
         }
+
+        int count = 0;
+        q--;
+        while (list.size() != 1) {
+            count = (count + q) % list.size();
+            int i = list.remove(count);
+        }
+
         System.out.println("the last one is " + list.getLast());
 	}
 }
