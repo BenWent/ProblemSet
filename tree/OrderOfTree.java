@@ -150,4 +150,28 @@ public class OrderOfTree{
 			}
 		}
 	}
+
+	private static void levelOrder2(TreeNode root) {
+		if(root == null) {
+			return;
+		}
+
+		LinkedList<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		int num;
+		while((num = queue.size()) != 0) {
+			for(int i = 0; i < num; i++) {
+				TreeNode node = queue.poll();
+				System.out.println(node.value);
+
+				if(node.left != null){
+					queue.offer(node.left);
+				}
+
+				if(node.right != null){
+					queue.offer(node.right);
+				}
+			}
+		}
+	}
 }
